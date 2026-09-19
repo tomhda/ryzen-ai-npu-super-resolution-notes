@@ -142,7 +142,14 @@ compiled cache and bit-identical output:
 | SwinIR-M, 256 tile | 6.73 s | 3.39 s |
 | AdcSR UNet half / VAE-decoder half, 128 tile | 0.738 / 1.359 s | 0.361 / 0.628 s |
 
-Default follows the Windows power mode. Power draw and thermals were not measured. All other numbers
+NPU power as reported by `xrt-smi examine` while running SwinIR-M continuously (not an external
+measurement): Default 0.6-1.2 W (about 0.85 W on average), Turbo a constant 2.4 W; idle is below
+0.4 W in both modes. Per 256 tile that is about 5.6 J (Default, 6.55 s) vs 8.1 J (Turbo, 3.39 s) for
+the NPU alone: Turbo is about 2x faster for about 1.45x the NPU energy. Whole-system energy was not
+measured. After setting Turbo on AC power and then unplugging, the mode stayed Turbo and SwinIR-M ran
+at 3.49 s per tile on battery.
+
+Default follows the Windows power mode. Thermals were not measured. All other numbers
 in this repository are in Default mode.
 
 ## Running the NPU and the iGPU at the same time does not add throughput

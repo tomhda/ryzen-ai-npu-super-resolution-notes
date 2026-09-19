@@ -3,6 +3,8 @@
 > **Unofficial.** This is an independent, personal project. It is not affiliated with, sponsored by, or
 > endorsed by AMD. AMD, Ryzen, Ryzen AI and Radeon are trademarks of Advanced Micro Devices, Inc.
 
+日本語の詳細（全記録）は [docs/ja/npu-research.md](docs/ja/npu-research.md)。
+
 Notes, workarounds and scripts from running image super-resolution models (Real-ESRGAN, SPAN, SwinIR,
 AdcSR) on the NPU of an AMD Ryzen AI laptop with the ONNX Runtime VitisAI execution provider
 (VAIML bf16 flow), and comparing it with the iGPU of the same chip. Everything here was measured on
@@ -64,8 +66,9 @@ While the NPU runs, the iGPU 3D engine stays at idle level and CPU use is 2-7%.
 
 ## Scripts
 
-Copies of the conversion and reproduction scripts used in the app repository (which holds the
-maintained versions and their tests).
+Copies of the conversion and reproduction scripts used in the app repository, which holds the
+maintained versions and their tests. The copies here are identical to
+[tomhda/ultraeasy-upscaler@22c7b46](https://github.com/tomhda/ultraeasy-upscaler/tree/22c7b46) (2026-09-20).
 
 | Script | Purpose |
 |---|---|

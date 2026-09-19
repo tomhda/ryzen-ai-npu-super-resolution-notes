@@ -144,7 +144,8 @@ compiled cache and bit-identical output:
 
 NPU power as reported by `xrt-smi examine` while running SwinIR-M continuously (not an external
 measurement): Default 0.6-1.2 W (about 0.85 W on average), Turbo a constant 2.4 W. With no process using the NPU the
-reading is `N/A` (or 0.001 W) in both modes; while a session is loading it is 0.04-0.16 W (Default) and 0.1-0.4 W (Turbo). Per 256 tile that is about 5.6 J (Default, 6.55 s) vs 8.1 J (Turbo, 3.39 s) for
+reading is `N/A` in both modes after the device has been left alone for 20-45 s; in Turbo, polling
+`xrt-smi examine` itself wakes the NPU and then reads 0.24-0.36 W; while a session is loading it is 0.04-0.16 W (Default) and 0.1-0.4 W (Turbo). Per 256 tile that is about 5.6 J (Default, 6.55 s) vs 8.1 J (Turbo, 3.39 s) for
 the NPU alone: Turbo is about 2x faster for about 1.45x the NPU energy. Whole-system energy was not
 measured. After setting Turbo on AC power and then unplugging, the mode stayed Turbo and SwinIR-M ran
 at 3.49 s per tile on battery.

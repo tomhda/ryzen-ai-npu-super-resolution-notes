@@ -138,6 +138,7 @@ compiled cache and bit-identical output:
 |---|---|---|
 | SPAN, 512 tile (whole model) | 0.246 s | 0.130 s |
 | animevideov3, 512 tile (whole model) | 0.524 s | 0.257 s |
+| Real-ESRGAN reduced RRDB, 853x480 frame (12 tiles of 256) | 2.07 s | 1.23 s |
 | SwinIR-M, 256 tile | 6.73 s | 3.39 s |
 | AdcSR UNet half / VAE-decoder half, 128 tile | 0.738 / 1.359 s | 0.361 / 0.628 s |
 

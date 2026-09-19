@@ -29,7 +29,7 @@ One 853x480 frame → 4x (3412x1920), including tiling, merge and colour convers
 |---|---|---|---|---|
 | 4xNomosUni SPAN | 0.51 s | **0.25 s** | 0.18 s | 46.9 dB |
 | realesr-animevideov3 (SRVGGNetCompact) | 0.46 s | 0.47 s | 0.35 s | 49.4 dB |
-| Real-ESRGAN, reduced RRDB | 2.78 s | 2.07 s | not measured | 37.9 dB |
+| Real-ESRGAN, reduced RRDB | 2.78 s | 2.07 s | 1.23 s | 37.9 dB |
 | SwinIR-M (real-world SR x4) | ~53 s | ~79 s | 256 tile: 6.73 → 3.39 s | 38.5 dB |
 | AdcSR (one-step diffusion SR) | ~1.3-1.6 s / 128 tile | ~2.05 s / 128 tile | ~1.05 s / 128 tile | 45.4 dB (vs the iGPU output) |
 

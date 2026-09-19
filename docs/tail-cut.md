@@ -143,8 +143,8 @@ compiled cache and bit-identical output:
 | AdcSR UNet half / VAE-decoder half, 128 tile | 0.738 / 1.359 s | 0.361 / 0.628 s |
 
 NPU power as reported by `xrt-smi examine` while running SwinIR-M continuously (not an external
-measurement): Default 0.6-1.2 W (about 0.85 W on average), Turbo a constant 2.4 W; idle is below
-0.4 W in both modes. Per 256 tile that is about 5.6 J (Default, 6.55 s) vs 8.1 J (Turbo, 3.39 s) for
+measurement): Default 0.6-1.2 W (about 0.85 W on average), Turbo a constant 2.4 W. With no process using the NPU the
+reading is `N/A` (or 0.001 W) in both modes; while a session is loading it is 0.04-0.16 W (Default) and 0.1-0.4 W (Turbo). Per 256 tile that is about 5.6 J (Default, 6.55 s) vs 8.1 J (Turbo, 3.39 s) for
 the NPU alone: Turbo is about 2x faster for about 1.45x the NPU energy. Whole-system energy was not
 measured. After setting Turbo on AC power and then unplugging, the mode stayed Turbo and SwinIR-M ran
 at 3.49 s per tile on battery.

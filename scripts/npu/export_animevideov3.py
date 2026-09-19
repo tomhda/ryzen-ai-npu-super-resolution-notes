@@ -29,7 +29,7 @@ else:
     IN_W = IN_H = TILE
 SCALE = 4
 # VAIML bf16 は実重みの PReLU で誤コンパイルするため、等価分解して回避する
-# （PReLU(x) = ReLU(x) - w * ReLU(-x)。詳細は docs/npu-research.md）
+# （PReLU(x) = ReLU(x) - w * ReLU(-x)。詳細は tomhda/ryzen-ai-npu-super-resolution-notes の docs/ja/npu-research.md 5.1）
 DECOMPOSE_PRELU = "--decompose-prelu" in sys.argv
 
 

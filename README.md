@@ -23,15 +23,30 @@ technical background.
 
 ## Results at a glance
 
-One 853x480 frame → 4x (3412x1920), including tiling, merge and colour conversion, resident session:
+One 853x480 frame → 4x (3412x1920), including tiling, merge and colour conversion, resident session
+(steady state; the first frame of a session also includes helper start-up):
 
 | Model | iGPU (DirectML, fp32) | NPU (Default) | NPU (Turbo) | NPU vs fp32 (PSNR) |
 |---|---|---|---|---|
 | 4xNomosUni SPAN | 0.51 s | **0.25 s** | 0.18 s | 46.9 dB |
 | realesr-animevideov3 (SRVGGNetCompact) | 0.46 s | 0.47 s | 0.35 s | 49.4 dB |
 | Real-ESRGAN, reduced RRDB | 2.78 s | 2.07 s | 1.23 s | 37.9 dB |
-| SwinIR-M (real-world SR x4) | ~53 s | ~79 s | 256 tile: 6.73 → 3.39 s | 38.5 dB |
-| AdcSR (one-step diffusion SR) | ~1.3-1.6 s / 128 tile | ~2.05 s / 128 tile | ~1.05 s / 128 tile | 45.4 dB (vs the iGPU output) |
+| SwinIR-M (real-world SR x4) | 59 s | 82 s | 49 s | 38.5 dB |
+| AdcSR (one-step diffusion SR) | 108 s | 247 s | 131 s | 45.4 dB (vs the iGPU output) |
+
+One tile, inference only (the tile size the app uses on each device):
+
+| Model | iGPU (DirectML, fp32) | NPU (Default) | NPU (Turbo) |
+|---|---|---|---|
+| 4xNomosUni SPAN | 42.5 ms / 256 | 0.115 s / 512 (body) | 0.072 s / 512 (body) |
+| realesr-animevideov3 | 34.5 ms / 256 | 0.239 s / 512 (body) | 0.131 s / 512 (body) |
+| Real-ESRGAN, reduced RRDB | 231 ms / 256 | 0.170 s / 256 | 0.092 s / 256 |
+| SwinIR-M | ~4.5 s / 256 | 6.73 s / 256 | 3.39 s / 256 |
+| AdcSR | 1.3-1.6 s / 128 | 2.05 s / 128 (UNet 0.74 + VAE decoder 1.36) | 1.05 s / 128 (0.36 + 0.63) |
+
+"body" is the tail-cut model (everything before the final `DepthToSpace`). AdcSR uses a 128 tile with
+a 32 px margin, so a 853x480 frame is 112 tiles. Turbo is not kept across a reboot (the machine came
+back in Default after a restart), so the Default columns are what a user gets unless they set it each session.
 
 While the NPU runs, the iGPU 3D engine stays at idle level and CPU use is 2-7%.
 

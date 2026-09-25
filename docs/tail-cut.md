@@ -150,7 +150,7 @@ the NPU alone: Turbo is about 2x faster for about 1.45x the NPU energy. Whole-sy
 measured. After setting Turbo on AC power and then unplugging, the mode stayed Turbo and SwinIR-M ran
 at 3.49 s per tile on battery.
 
-Default follows the Windows power mode. Thermals were not measured. All other numbers
+Default follows the Windows power mode. Thermals were not measured. **The setting does not survive a reboot**: the machine came back in Default after a restart, so Turbo has to be set again per session. All other numbers
 in this repository are in Default mode.
 
 ## Running the NPU and the iGPU at the same time does not add throughput

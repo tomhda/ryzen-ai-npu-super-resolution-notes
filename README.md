@@ -45,8 +45,7 @@ One tile, inference only (the tile size the app uses on each device):
 | AdcSR | 1.3-1.6 s / 128 | 2.05 s / 128 (UNet 0.74 + VAE decoder 1.36) | 1.05 s / 128 (0.36 + 0.63) |
 
 "body" is the tail-cut model (everything before the final `DepthToSpace`). AdcSR uses a 128 tile with
-a 32 px margin, so a 853x480 frame is 112 tiles. Turbo is not kept across a reboot (the machine came
-back in Default after a restart), so the Default columns are what a user gets unless they set it each session.
+a 32 px margin, so a 853x480 frame is 112 tiles.
 
 While the NPU runs, the iGPU 3D engine stays at idle level and CPU use is 2-7%.
 

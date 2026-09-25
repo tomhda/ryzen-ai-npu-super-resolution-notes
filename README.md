@@ -38,9 +38,9 @@ One tile, inference only (the tile size the app uses on each device):
 
 | Model | iGPU (DirectML, fp32) | NPU (Default) | NPU (Turbo) |
 |---|---|---|---|
-| 4xNomosUni SPAN | 42.5 ms / 256 | 0.115 s / 512 (body) | 0.072 s / 512 (body) |
-| realesr-animevideov3 | 34.5 ms / 256 | 0.239 s / 512 (body) | 0.131 s / 512 (body) |
-| Real-ESRGAN, reduced RRDB | 231 ms / 256 | 0.170 s / 256 | 0.092 s / 256 |
+| 4xNomosUni SPAN | 0.043 s / 256 | 0.115 s / 512 (body) | 0.072 s / 512 (body) |
+| realesr-animevideov3 | 0.035 s / 256 | 0.239 s / 512 (body) | 0.131 s / 512 (body) |
+| Real-ESRGAN, reduced RRDB | 0.231 s / 256 | 0.170 s / 256 | 0.092 s / 256 |
 | SwinIR-M | ~4.5 s / 256 | 6.73 s / 256 | 3.39 s / 256 |
 | AdcSR | 1.3-1.6 s / 128 | 2.05 s / 128 (UNet 0.74 + VAE decoder 1.36) | 1.05 s / 128 (0.36 + 0.63) |
 

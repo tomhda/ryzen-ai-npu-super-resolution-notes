@@ -43,9 +43,9 @@ AMD Ryzen AI の NPU（XDNA2）で超解像モデルを動かし、同じチッ�
 
 | モデル | GPU（DirectML, fp32） | NPU（Default） | NPU（Turbo） |
 |---|---|---|---|
-| 4xNomosUni SPAN | 42.5 ms / 256 | 0.115 秒 / 512（body） | 0.072 秒 / 512（body） |
-| Anime Video v3 | 34.5 ms / 256 | 0.239 秒 / 512（body） | 0.131 秒 / 512（body） |
-| Real-ESRGAN（AMD縮小版 RRDB） | 231 ms / 256 | 0.170 秒 / 256 | 0.092 秒 / 256 |
+| 4xNomosUni SPAN | 0.043 秒 / 256 | 0.115 秒 / 512（body） | 0.072 秒 / 512（body） |
+| Anime Video v3 | 0.035 秒 / 256 | 0.239 秒 / 512（body） | 0.131 秒 / 512（body） |
+| Real-ESRGAN（AMD縮小版 RRDB） | 0.231 秒 / 256 | 0.170 秒 / 256 | 0.092 秒 / 256 |
 | SwinIR-M | 約 4.5 秒 / 256 | 6.73 秒 / 256 | 3.39 秒 / 256 |
 | AdcSR | 1.3〜1.6 秒 / 128 | 2.05 秒 / 128（前半 0.74 + 後半 1.36） | 1.05 秒 / 128（0.36 + 0.63） |
 

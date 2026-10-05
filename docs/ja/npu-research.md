@@ -174,6 +174,31 @@ AMD へ報告済み（[amd/RyzenAI-SW#398](https://github.com/amd/RyzenAI-SW/iss
   区間を後ろ側タイムスタンプの layer_id に帰属させ、`layer_name_map.json` の `user_friendly_name` で
   演算名に対応づける。プロファイル ON の時間は OFF の基準と比べない。
 
+### 3.9 VAIML コンパイル中の CPU とメモリ（2026-10-05）
+
+空のキャッシュに対して `npu_serve.py` でセッションを生成し、`context.json` と `.rai` が揃うまでを測った。
+プロセス優先度は BelowNormal。CPU は 16 論理コアに対するプロセスツリーの使用率（約 4 秒間隔）、
+メモリはプロセスツリーの private bytes の最大値。Ryzen AI SW 1.8.0、同梱の既定設定（`optimize_level: 2`）。
+
+| 変換する ONNX | 所要時間 | CPU 平均 / 最大 | メモリの最大 |
+|---|---|---|---|
+| 4xNomosUni SPAN body（512 タイル、fp32 直接） | 850 秒 | 6% / 7% | 約 1.2GB |
+| Anime Video v3 分解版 body（512 タイル、bf16cast） | 903 秒 | 6% / 7% | 約 1.9GB |
+| Real-ESRGAN（AMD縮小版）（256 タイル、bf16cast） | 1529 秒 | 6% / 7% | 約 1.3GB |
+| SwinIR-M（256 タイル、bf16cast） | 3918 秒 | 6% / 70% | 約 25GB |
+
+- コンパイルはほぼ全区間で 1 コア分しか使わない。同梱設定の `aiecompiler_args: -Xelfgen=-j16` が効くのは
+  短い区間だけで、SwinIR-M では 65 分のうち約 10 秒だけ使用率が上がった。
+- 優先度を Normal にしても所要時間は変わらない（SPAN body: Normal 850 秒、Idle 792 秒。測定の順序と
+  並行していた別作業の影響の範囲）。CPU の取り合いが起きていないため。
+- コンパイル中に 45 秒ごとに実行した単一スレッドの CPU 処理（約 0.6 秒の Python ループ）は、
+  コンパイルなしのときの約 1.07 倍の時間だった。
+- 2 本を同時にコンパイルしても、それぞれの所要時間はほぼ変わらなかった（SPAN body 840 秒、
+  Anime Video v3 body 903 秒）。
+- SwinIR-M はメモリを多く使う。private bytes は開始 70 秒後に 4GB を超え、約 28 分後から 12GB 以上が続き、
+  最大約 25GB。物理メモリ 32GB の本機で、空きメモリは最小 124MB まで下がった。
+- AdcSR は未測定。
+
 ## 4. 精度形式: int8 と bf16
 
 ### 4.1 int8（XIR フロー）は Q/DQ と多サブグラフ分割が支配する
@@ -584,5 +609,9 @@ python -m quark.onnx.tools.convert_fp32_to_bf16 --input <fp32.onnx> --output <bf
 - キャッシュキーは ONNX ファイル名の stem から決まる。モデルファイルと `modelcachekey_<stem>/` は対で扱う。
 - VAIML の初回コンパイル時間の目安: Anime Video v3 / SPAN 約 9 分、Real-ESRGAN（RRDB）約 19 分、
   SwinIR-M 約 51 分、AdcSR 前半約 93 分 + 後半約 30 分。
+  2026-10-05 の再測定（tail-cut の body、優先度 BelowNormal）では 14〜15 分、25 分、65 分だった（3.9 節）。
+- 1 モデル経路の `npu_serve.py` でも、初回コンパイル中は標準出力を標準エラーへ退避する。
+  AIE コンパイラが `Old buffers:` などを標準出力へ直接書くため、標準出力をプロトコルに使う親プロセスが
+  それを応答として読み、切断してしまう（コンパイルが完走せず、キャッシュも残らない）。
 - コンパイル中に EP がカレントディレクトリへ書く `original-model-signature.txt` /
   `original-info-signature.txt` を消すと、コンパイル末尾のコピーで失敗する。

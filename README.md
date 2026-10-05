@@ -71,6 +71,10 @@ While the NPU runs, the iGPU 3D engine stays at idle level and CPU use is 2-7%.
   (XIR) flow, which split Real-ESRGAN into 11 subgraphs.
 - Recompiling the same graph changes run time by several percent (0.375 s vs 0.406 s on a
   two-block SwinIR model), so small speedups need repeated compiles on both sides.
+- VAIML compilation is single-threaded for almost its whole duration: about 6% CPU on a 16-thread
+  machine for 14 min (SPAN body), 15 min (Anime Video v3 body), 25 min (RRDB) and 65 min (SwinIR-M).
+  Process priority does not change the time. Peak private memory is 1-2 GB for the first three and
+  about 25 GB for SwinIR-M (section 3.9 of the Japanese notes).
 
 ## Issues reported to AMD
 

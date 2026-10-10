@@ -5,7 +5,7 @@ AMD Ryzen AI の NPU（XDNA2）で超解像モデルを動かし、同じチッ�
 数値はすべて 1 台の実機での実測で、推測は推測と明記する。
 
 英語の個別ページ: [tail-cut](../tail-cut.md)、[SwinIR を NPU で動かす](../swinir-npu.md)、[AdcSR を NPU で動かす](../adcsr-npu.md)。
-実装は Windows 用アップスケーラー [tomhda/ultraeasy-upscaler](https://github.com/tomhda/ultraeasy-upscaler) にある。
+実装は Windows 用アップスケーラー [tomhda/togu-scaler](https://github.com/tomhda/togu-scaler) にある。
 
 要点:
 
@@ -446,7 +446,7 @@ bicubic 劣化で学習した軽量モデルは実写・アニメの実素材に
 
 ### 5.6 AdcSR（1 ステップ拡散）
 
-英語の要約: [adcsr-npu.md](../adcsr-npu.md)。タイル継ぎ目の格子の診断は [adcsr-tile-diagnosis.md](https://github.com/tomhda/ultraeasy-upscaler/blob/main/docs/adcsr-tile-diagnosis.md)。
+英語の要約: [adcsr-npu.md](../adcsr-npu.md)。タイル継ぎ目の格子の診断は [adcsr-tile-diagnosis.md](https://github.com/tomhda/togu-scaler/blob/main/docs/adcsr-tile-diagnosis.md)。
 
 AdcSR（net_params_200、SD2.1-base 派生・1 ステップ）は、1 グラフで NPU に常駐させると 2 回目以降の出力が
 全画素 NaN になる。切り分けの経緯:
@@ -571,7 +571,7 @@ fp32 ONNX を渡すだけで、量子化・bf16 変換・キャッシュ管理�
 ### 6.3 2026-08-15: Ryzen AI SW 1.8.0 への更新
 
 Windows ML の EP カタログが停止した（NPU ドライバ .329 が VitisAI EP 1.8.68 の対応上限 .297 を超過。
-詳細は [span-bench-results.md](https://github.com/tomhda/ultraeasy-upscaler/blob/main/docs/span-bench-results.md)）ため、ネイティブ側を 1.8.0 に更新した
+詳細は [span-bench-results.md](https://github.com/tomhda/togu-scaler/blob/main/docs/span-bench-results.md)）ため、ネイティブ側を 1.8.0 に更新した
 （conda env `ryzen-ai-1.8.0`、1.7.1 と並存、キャッシュは `vendor/amd-npu-1.8/` に分離。
 1.8.0 はドライバ .280 以降に対応、推奨 .376）。
 

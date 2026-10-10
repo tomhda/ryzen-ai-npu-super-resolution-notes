@@ -70,7 +70,7 @@ Full write-up, minimal reproducer (`repro.py` + fixed inputs + raw NaN
 outputs) and the ONNX halves:
 **[amd/RyzenAI-SW#402](https://github.com/amd/RyzenAI-SW/issues/402)** and the
 release
-[`adcsr-npu-repro-v1`](https://github.com/tomhda/ultraeasy-upscaler/releases/tag/adcsr-npu-repro-v1).
+[`adcsr-npu-repro-v1`](https://github.com/tomhda/togu-scaler/releases/tag/adcsr-npu-repro-v1).
 The failing layer (EP / VAIP / XRT / driver) is not identified; the report
 lists what was ruled out.
 
@@ -79,12 +79,12 @@ lists what was ruled out.
 Run the two halves in **two worker processes** and hand the 4 MiB latent
 between them through the parent. Implementation in this repository:
 
-- [`tools/npu-serve/npu_worker.py`](https://github.com/tomhda/ultraeasy-upscaler/blob/main/tools/npu-serve/npu_worker.py):
+- [`tools/npu-serve/npu_worker.py`](https://github.com/tomhda/togu-scaler/blob/main/tools/npu-serve/npu_worker.py):
   a role-agnostic tensor executor (one VitisAI session per process). During
   session creation it redirects fd 1 to fd 2, because the AIE compiler
   writes `Old buffers:` spill reports to stdout mid-compile and would corrupt
   a stdout protocol.
-- [`tools/npu-serve/npu_twostage.py`](https://github.com/tomhda/ultraeasy-upscaler/blob/main/tools/npu-serve/npu_twostage.py):
+- [`tools/npu-serve/npu_twostage.py`](https://github.com/tomhda/togu-scaler/blob/main/tools/npu-serve/npu_twostage.py):
   the relay (self-test of two consecutive runs at start-up, finiteness
   checks on all boundary tensors and on the merged image, one in-image
   recovery by restarting both workers, one response per image), Windows Job

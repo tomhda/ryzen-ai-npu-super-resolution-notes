@@ -11,7 +11,7 @@ AdcSR) on the NPU of an AMD Ryzen AI laptop with the ONNX Runtime VitisAI execut
 one machine; guesses are marked as guesses.
 
 The models run in production in a Windows upscaler app:
-[tomhda/ultraeasy-upscaler](https://github.com/tomhda/ultraeasy-upscaler). This repository holds the
+[tomhda/togu-scaler](https://github.com/tomhda/togu-scaler). This repository holds the
 technical background.
 
 ## Test machine
@@ -86,7 +86,7 @@ While the NPU runs, the iGPU 3D engine stays at idle level and CPU use is 2-7%.
 
 Copies of the conversion and reproduction scripts used in the app repository, which holds the
 maintained versions and their tests. The copies here are identical to
-[tomhda/ultraeasy-upscaler@22c7b46](https://github.com/tomhda/ultraeasy-upscaler/tree/22c7b46) (2026-09-20).
+[tomhda/togu-scaler@22c7b46](https://github.com/tomhda/togu-scaler/tree/22c7b46) (2026-09-20).
 
 | Script | Purpose |
 |---|---|

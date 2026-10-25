@@ -1,11 +1,12 @@
 # AMD Ryzen AI NPU での超解像: 研究ノート
 
 AMD Ryzen AI の NPU（XDNA2）で超解像モデルを動かし、同じチップの iGPU と速度・画質・
-リソース占有で比較した記録。2026-08 から 2026-09 の測定をトピック別にまとめている。
+リソース占有で比較した記録。2026-08 から 2026-10 の測定をトピック別にまとめている。
 数値はすべて 1 台の実機での実測で、推測は推測と明記する。
 
 英語の個別ページ: [tail-cut](../tail-cut.md)、[SwinIR を NPU で動かす](../swinir-npu.md)、[AdcSR を NPU で動かす](../adcsr-npu.md)。
 実装は Windows 用アップスケーラー [tomhda/togu-scaler](https://github.com/tomhda/togu-scaler) にある。
+変換済みの ONNX（GPU 用 fp32、NPU 用 bf16）は Hugging Face で公開している: [Super-resolution models for the AMD Ryzen AI NPU (ONNX)](https://huggingface.co/collections/Tomoali/super-resolution-models-for-the-amd-ryzen-ai-npu-onnx)
 
 要点:
 
@@ -35,9 +36,13 @@ AMD Ryzen AI の NPU（XDNA2）で超解像モデルを動かし、同じチッ�
 |---|---|---|---|---|
 | 4xNomosUni SPAN | 0.51 秒 | **0.25 秒** | 0.18 秒 | 46.9 dB |
 | Anime Video v3 | 0.46 秒 | 0.47 秒 | 0.35 秒 | 49.4 dB |
+| Real-ESRGAN General v3 | 0.61 秒 | 0.65 秒 | — | 43.7 dB |
 | Real-ESRGAN（AMD縮小版 RRDB） | 2.78 秒 | 2.07 秒 | 1.23 秒 | 37.9 dB（1.7.1 時点） |
 | SwinIR-M（12 タイル） | 59 秒 | 82 秒 | 49 秒 | 38.5 dB |
 | AdcSR（112 タイル） | 108 秒 | 247 秒 | 131 秒 | 45.4 dB（GPU 版との比較） |
+
+Real-ESRGAN General v3 は 2026-10-11 に別の回で測定。同じ回の Anime Video v3 は GPU 0.37 秒・NPU 0.43 秒、
+4xNomosUni SPAN は GPU 0.47 秒・NPU 0.25 秒。忠実度は 1280x534 の写真 1 枚で GPU の fp32 出力と比べた値。
 
 タイル 1 回の推論のみ（各実行先でアプリが使うタイルサイズ）:
 
@@ -185,6 +190,7 @@ AMD へ報告済み（[amd/RyzenAI-SW#398](https://github.com/amd/RyzenAI-SW/iss
 | 4xNomosUni SPAN body（512 タイル、fp32 直接） | 850 秒 | 6% / 7% | 約 1.2GB |
 | Anime Video v3 分解版 body（512 タイル、bf16cast） | 903 秒 | 6% / 7% | 約 1.9GB |
 | Real-ESRGAN（AMD縮小版）（256 タイル、bf16cast） | 1529 秒 | 6% / 7% | 約 1.3GB |
+| Real-ESRGAN General v3 分解版 body（512 タイル、bf16cast） | 1210 秒 | — | — |
 | SwinIR-M（256 タイル、bf16cast） | 3918 秒 | 6% / 70% | 約 25GB |
 
 - コンパイルはほぼ全区間で 1 コア分しか使わない。同梱設定の `aiecompiler_args: -Xelfgen=-j16` が効くのは

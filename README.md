@@ -14,6 +14,9 @@ The models run in production in a Windows upscaler app:
 [tomhda/togu-scaler](https://github.com/tomhda/togu-scaler). This repository holds the
 technical background.
 
+The converted ONNX files (fp32 for DirectML, bf16 for the VitisAI EP) are on Hugging Face:
+[Super-resolution models for the AMD Ryzen AI NPU (ONNX)](https://huggingface.co/collections/Tomoali/super-resolution-models-for-the-amd-ryzen-ai-npu-onnx).
+
 ## Test machine
 
 - AMD Ryzen AI 7 PRO 350 (XDNA2 NPU, 8 columns) / Radeon 860M iGPU / 32 GB LPDDR5-8000, Windows 11
@@ -30,9 +33,14 @@ One 853x480 frame → 4x (3412x1920), including tiling, merge and colour convers
 |---|---|---|---|---|
 | 4xNomosUni SPAN | 0.51 s | **0.25 s** | 0.18 s | 46.9 dB |
 | realesr-animevideov3 (SRVGGNetCompact) | 0.46 s | 0.47 s | 0.35 s | 49.4 dB |
+| realesr-general-x4v3 (SRVGGNetCompact, 64 ch, 32 layers) | 0.61 s | 0.65 s | — | 43.7 dB |
 | Real-ESRGAN, reduced RRDB | 2.78 s | 2.07 s | 1.23 s | 37.9 dB |
 | SwinIR-M (real-world SR x4) | 59 s | 82 s | 49 s | 38.5 dB |
 | AdcSR (one-step diffusion SR) | 108 s | 247 s | 131 s | 45.4 dB (vs the iGPU output) |
+
+realesr-general-x4v3 was measured on 2026-10-11 in a separate run. In that run realesr-animevideov3 took
+0.37 s (iGPU) / 0.43 s (NPU) and 4xNomosUni SPAN 0.47 s / 0.25 s. Its PSNR is on one 1280x534 photograph
+against the iGPU fp32 output.
 
 One tile, inference only (the tile size the app uses on each device):
 
@@ -72,9 +80,9 @@ While the NPU runs, the iGPU 3D engine stays at idle level and CPU use is 2-7%.
 - Recompiling the same graph changes run time by several percent (0.375 s vs 0.406 s on a
   two-block SwinIR model), so small speedups need repeated compiles on both sides.
 - VAIML compilation is single-threaded for almost its whole duration: about 6% CPU on a 16-thread
-  machine for 14 min (SPAN body), 15 min (Anime Video v3 body), 25 min (RRDB) and 65 min (SwinIR-M).
-  Process priority does not change the time. Peak private memory is 1-2 GB for the first three and
-  about 25 GB for SwinIR-M (section 3.9 of the Japanese notes).
+  machine for 14 min (SPAN body), 15 min (Anime Video v3 body), 20 min (General v3 body), 25 min (RRDB)
+  and 65 min (SwinIR-M). Process priority does not change the time. Peak private memory is 1-2 GB for
+  SPAN, Anime Video v3 and RRDB, and about 25 GB for SwinIR-M (section 3.9 of the Japanese notes).
 
 ## Issues reported to AMD
 
@@ -100,7 +108,8 @@ maintained versions and their tests. The copies here are identical to
 | `scripts/adcsr/rewrite_in_to_n5.py` | rewrite 3D normalisation to 4D so VAIML offloads it |
 | `scripts/adcsr/split_adcsr_npu.py` | split AdcSR into the UNet half and the VAE-decoder half |
 
-No model weights are included. Each model keeps its own licence (Real-ESRGAN BSD-3-Clause,
+No model weights are included in this repository; the ONNX files are in the Hugging Face collection
+linked above. Each model keeps its own licence (Real-ESRGAN BSD-3-Clause,
 4xNomosUni SPAN CC-BY-4.0, SwinIR Apache-2.0, AdcSR Apache-2.0 with a Stable Diffusion 2.1 base under
 CreativeML Open RAIL-M, AMD's reduced RRDB model research-only RAIL-MS).
 
